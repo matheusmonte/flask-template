@@ -1,5 +1,5 @@
 #!flask/bin/python
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -23,6 +23,10 @@ def post_sample():
     }
     
     return jsonify({'sample': sample_object}), 201
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 if __name__ == '__main__':
     app.run(debug=True)
