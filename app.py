@@ -8,21 +8,20 @@ app.config.from_object('config')
 def index():
     return "Hello, World!"
 
-@app.route('/api/get', methods=['GET'])
+@app.route('/api/research', methods=['GET'])
 def get_sample():
     return jsonify({'What_is_it': 'Sample' })
 
-@app.route('/api/post', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def post_sample():
-    if not request.json or not 'title' in request.json:
-        abort(400)
-    sample_object = {
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-        'done': False
-    }
-    
-    return jsonify({'sample': sample_object}), 201
+    json_data = request.get_json(force=True)
+    un = json_data['username']
+    pw = json_data['password'] 
+    #add check at database
+    response = False
+    if str(un) == 'clark' and str(pw) =='12345':
+        response = True
+    return jsonify({'response': response})
 
 @app.errorhandler(404)
 def not_found(error):
